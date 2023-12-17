@@ -1,13 +1,23 @@
-import { FormEvent, useRef } from "react";
-import useAxios from "../hooks/useAxios.tsx";
+import { FormEvent, useRef, useState } from "react";
+import useAxios from "./hooks/useAxios.tsx";
+import { getYoutubeID } from "./utils.tsx";
 
 export default function App() {
-  const inputUrlRef = useRef();
+  const inputUrlRef = useRef<HTMLInputElement>(null);
+  const [urlResult, setUrlResult] = useState(null);
 
-  const handleSubmit = (e: FormEvent) => {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    console.log(useAxios());
-  };
+    if (inputUrlRef && inputUrlRef.current) {
+      const ID = getYoutubeID(inputUrlRef.current.value);
+
+      if (ID) {
+        const response = await useAxios(ID);
+        setUrlResult(response.link);
+        inputUrlRef.current.value = "";
+      }
+    }
+  }
 
   return (
     <>
@@ -16,14 +26,20 @@ export default function App() {
         <section className="main-section">
           <form className="form" onSubmit={handleSubmit}>
             <input
-              ref={inputUrlRef.current}
+              ref={inputUrlRef}
               type="text"
               className="link-input"
               placeholder="Enter youtube film url"
             />
             <button className="search-btn">Search</button>
           </form>
-          <button className="download-btn">Download</button>
+          {urlResult ? (
+            <a className="download-btn" href={urlResult}>
+              Download
+            </a>
+          ) : (
+            ""
+          )}
         </section>
       </div>
     </>

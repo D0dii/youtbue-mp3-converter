@@ -57,6 +57,7 @@ button {
   font-size: 1.25rem;
 }
 
-button.download-btn {
-  background: #23d5ab;
+.download-btn {
+  font-size: 1.25rem;
+  color: white;
 }
