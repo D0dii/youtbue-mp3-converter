@@ -6,7 +6,7 @@ export default async function useAxios(ID: string) {
     url: "https://youtube-mp36.p.rapidapi.com/dl",
     params: { id: ID },
     headers: {
-      "X-RapidAPI-Key": "",
+      "X-RapidAPI-Key": import.meta.env.VITE_API_KEY,
       "X-RapidAPI-Host": "youtube-mp36.p.rapidapi.com",
     },
   };
